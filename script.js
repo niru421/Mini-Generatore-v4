@@ -160,23 +160,37 @@ function genName() {
 function genEmail() {
     let email = "";
     let attempts = 0;
+
     while (attempts < 200) {
         const f = firstNames[Math.floor(Math.random() * firstNames.length)].toLowerCase();
         const l = lastNames[Math.floor(Math.random() * lastNames.length)].toLowerCase();
-        const num = Math.floor(100 + Math.random() * 9900);
-        email = f + "_" + l + num + "@example.com";
-        if (!usedEmails.has(email)) {
+
+        // random number 2-4 digit
+        const num = Math.floor(10 + Math.random() * 9999).toString();
+
+        email = f + "_" + l + num;
+
+        // শুধু ছোট হাতের letter + _ + total length 17-20
+        if (
+            email.length >= 18 &&
+            email.length <= 26 &&
+            email.includes("_") &&
+            /^[a-z_0-9]+$/.test(email) &&
+            !usedEmails.has(email)
+        ) {
             usedEmails.add(email);
             break;
         }
+
         attempts++;
     }
+
     document.getElementById("email").value = email;
     copy(email);
 }
 
 function genPass() {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let pass = "";
     const length = 16 + Math.floor(Math.random() * 5);
     for (let i = 0; i < length; i++) {
